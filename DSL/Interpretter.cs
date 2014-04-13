@@ -488,6 +488,7 @@ namespace DSL
 			var layerParams = EvaluateKeyValuePair(node.ChildNodes[0]);
 
 			int length = 1;
+			bool biased = true;
 			IActivationFunction aFunc = null;
 			IInputFunction iFunc = null;
 			IWeightFunction wFunc = null;
@@ -500,6 +501,10 @@ namespace DSL
 			if (layerParams.ContainsKey("length"))
 			{
 				length = Int32.Parse(layerParams["length"]);
+			}
+			if (layerParams.ContainsKey("biased"))
+			{
+				biased = bool.Parse(layerParams["biased"]);
 			}
 			if (layerParams.ContainsKey("activationFunction"))
 			{
@@ -526,7 +531,8 @@ namespace DSL
 					.GetValue(null));
 			}
 
-			var layer = Layer.Create(layerParams["id"], length: length, aFunc: aFunc, wFunc: wFunc, iFunc: iFunc, wInit: wInit);
+			var layer = Layer.Create(layerParams["id"], length: length, aFunc: aFunc, 
+				wFunc: wFunc, iFunc: iFunc, wInit: wInit, biased: biased);
 			return new Tuple<Type, object>(typeof(Layer), layer);
 		}
 

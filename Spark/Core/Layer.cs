@@ -102,6 +102,10 @@ namespace Spark.Core
 					throw new System.Exception("This network is unbiased!");
 				}
 			}
+			set
+			{
+				biases = value;
+			}
 		}
 
 		private Layer(string id, int length = 1, bool biased = true, 

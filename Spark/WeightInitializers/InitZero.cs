@@ -11,7 +11,7 @@ namespace Spark.WeightInitializers
 
 		public DenseVector Initialize(int rows)
 		{
-			throw new DenseVector(rows);
+			return new DenseVector(rows);
 		}
 	}
 }

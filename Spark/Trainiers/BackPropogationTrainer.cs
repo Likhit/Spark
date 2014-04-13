@@ -130,6 +130,11 @@ namespace Spark.Trainiers
 				var nextLayers = new HashSet<Layer>();
 				foreach (var cLayer in currentLayers)
 				{
+					var deltaH = LearnRate * gradients[cLayer.Id];
+					if (cLayer.Biased)
+					{
+						cLayer.Biases = (DenseVector)(DenseMatrix.OfColumnVectors(cLayer.Biases) + deltaH).Column(0);
+					}
 					if (net.Edges.ContainsKey(cLayer.Id))
 					{
 						var nxtLys = net.Edges[cLayer.Id];

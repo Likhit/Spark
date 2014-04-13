@@ -99,6 +99,11 @@ namespace Spark.Core
 			{
 				activationFuncDerivative = AFunc.Differentiate(output, inputFuncOutput);
 			}
+			if (this.biased)
+			{
+				output = DenseMatrix.OfColumnVectors(
+					output.ColumnEnumerator().Select(tuple => tuple.Item2 + this.biases).ToArray());
+			}
 			return output;
 		}
 
