@@ -139,7 +139,7 @@ namespace Spark.Core
 			}
 		}
 
-		public static Layer Create(string id, int length = 1, bool biased = true,
+		public static Layer Create(string id, int length = 1, bool biased = false,
 			IActivationFunction aFunc = null, IWeightFunction wFunc = null,
 			IInputFunction iFunc = null, IWeightInitializer wInit = null)
 		{

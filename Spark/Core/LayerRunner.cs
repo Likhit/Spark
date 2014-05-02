@@ -94,15 +94,16 @@ namespace Spark.Core
 
 		public DenseMatrix Fire(bool storeDerivative = false)
 		{
-			output = AFunc.Apply(inputFuncOutput);
+			var actualInps = inputFuncOutput;
+			if (this.biased)
+			{
+				actualInps = DenseMatrix.OfColumnVectors(
+					inputFuncOutput.ColumnEnumerator().Select(tuple => tuple.Item2 + this.biases).ToArray());
+			}
+			output = AFunc.Apply(actualInps);
 			if (storeDerivative)
 			{
 				activationFuncDerivative = AFunc.Differentiate(output, inputFuncOutput);
-			}
-			if (this.biased)
-			{
-				output = DenseMatrix.OfColumnVectors(
-					output.ColumnEnumerator().Select(tuple => tuple.Item2 + this.biases).ToArray());
 			}
 			return output;
 		}

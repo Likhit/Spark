@@ -416,6 +416,7 @@ namespace DSL
 			double learnRate = 0.05;
 			double minError = 0.01;
 			int maxEpochs = 100;
+			int maxHiddenLayers = 2;
 			int show = 10;
 			IPerformanceFunction pFunc = null;
 			TrainingModes tMode = TrainingModes.OnLine;
@@ -432,6 +433,10 @@ namespace DSL
 			{
 				maxEpochs = int.Parse(trainerParams["maxEpochs"]);
 			}
+			if (trainerParams.ContainsKey("maxHiddenLayers"))
+			{
+				maxHiddenLayers = int.Parse(trainerParams["maxHiddenLayers"]);
+			}
 			if (trainerParams.ContainsKey("show"))
 			{
 				show = int.Parse(trainerParams["show"]);
@@ -447,7 +452,22 @@ namespace DSL
 				tMode = (TrainingModes)Enum.Parse(typeof(TrainingModes), trainerParams["mode"]);
 			}
 
-			var trainer = new BackPropogationTrainer(learnRate, minError, 0.01, maxEpochs, show, pFunc, tMode);
+			Trainer trainer = null;
+			switch (trainerClassName.Token.Text)
+			{
+				case "BackPropogationTrainer":
+					trainer = new BackPropogationTrainer(learnRate, minError, 0.01, maxEpochs, show, pFunc, tMode);
+					break;
+				case "PerceptronTrainer":
+					trainer = new PerceptronTrainer(learnRate, minError, 0.01, maxEpochs, show, pFunc, tMode);
+					break;
+				case "ConstructiveTrainer":
+					trainer = new ConstructiveTrainer(learnRate, minError, 0.01, maxEpochs, show, maxHiddenLayers,
+						pFunc, tMode);
+					break;
+				default:
+					throw new Exception("Trainer of kind " + trainerClassName.Token.Text + " does not exist.");
+			}
 			return new Tuple<Type, object>(typeof(Trainer), trainer);
 		}
 

@@ -41,6 +41,21 @@ namespace Spark.Core
 			return net.ConnectTo(this);
 		}
 
+		public Network Absorb(Network net, bool overrideInputs = false, bool overrideOutputs = false)
+		{
+			this.AddLayers(net.Layers.Select(kvPair => kvPair.Value));
+			this.AddEdges(net.Edges);
+			if (overrideInputs)
+			{
+				this.inputLayers = net.inputLayers;
+			}
+			if (overrideOutputs)
+			{
+				this.outputLayers = net.outputLayers;
+			}
+			return this;
+		}
+
 		private void AddLayers(IEnumerable<Layer> layers)
 		{
 			foreach (var layer in layers)

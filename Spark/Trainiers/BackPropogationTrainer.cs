@@ -21,7 +21,7 @@ namespace Spark.Trainiers
 		{
 			var sInputs = inputs.Select(x => (DenseMatrix)x.Clone()).ToList();
 			var sTargets = targets.Select(x => (DenseMatrix)x.Clone()).ToList();
-			for (int epoch = 0; epoch < MaxEpochs; epoch++)
+			for (int epoch = 0; epoch < MaxEpochs + 1; epoch++)
 			{
 				var error = this.PFunc.Apply(net.Run(inputs), targets);
 				var totalError = error.Sum() / error.Count;
@@ -38,21 +38,24 @@ namespace Spark.Trainiers
 					break;
 				}
 
-				Core.Utils.Helpers.Shuffle(sInputs, sTargets);
-				for (int i = 0; i < sInputs[0].ColumnCount; i++)
-				{
-					var inp = sInputs.Select(x => DenseMatrix.OfColumnVectors(x.Column(i))).ToList();
-					var targ = sTargets.Select(x => DenseMatrix.OfColumnVectors(x.Column(i))).ToList();
-					var err = DenseVector.Create(1, _ => error[i]);
-					var feedForwardResult = net.Run(inp, storeDerivatives: true);
-					var errorDiffs = this.PFunc.Differentiate(err, feedForwardResult, targ);
-					var gradients = FindGradients(net, errorDiffs);
-					UpdateWeights(net, gradients);
-				}
-
-				if (epoch % Show == 0 || epoch == MaxEpochs - 1)
+				if (epoch % Show == 0 || epoch == MaxEpochs)
 				{
 					yield return errorObj;
+				}
+
+				if (epoch < MaxEpochs)
+				{
+					Core.Utils.Helpers.Shuffle(sInputs, sTargets);
+					for (int i = 0; i < sInputs[0].ColumnCount; i++)
+					{
+						var inp = sInputs.Select(x => DenseMatrix.OfColumnVectors(x.Column(i))).ToList();
+						var targ = sTargets.Select(x => DenseMatrix.OfColumnVectors(x.Column(i))).ToList();
+						var err = DenseVector.Create(1, _ => error[i]);
+						var feedForwardResult = net.Run(inp, storeDerivatives: true);
+						var errorDiffs = this.PFunc.Differentiate(err, feedForwardResult, targ);
+						var gradients = FindGradients(net, errorDiffs);
+						UpdateWeights(net, gradients);
+					}
 				}
 			}
 		}
@@ -61,7 +64,7 @@ namespace Spark.Trainiers
 		{
 			var sInputs = inputs.Select(x => (DenseMatrix)x.Clone()).ToList();
 			var sTargets = targets.Select(x => (DenseMatrix)x.Clone()).ToList();
-			for (int epoch = 0; epoch < MaxEpochs; epoch++)
+			for (int epoch = 0; epoch < MaxEpochs + 1; epoch++)
 			{
 				var error = this.PFunc.Apply(net.Run(inputs), targets);
 				var totalError = error.Sum() / error.Count;
@@ -78,15 +81,18 @@ namespace Spark.Trainiers
 					break;
 				}
 
-				Core.Utils.Helpers.Shuffle(sInputs, sTargets);
-				var feedForwardResult = net.Run(sInputs, storeDerivatives: true);
-				var errorDiffs = this.PFunc.Differentiate(error, feedForwardResult, sTargets);
-				var gradients = FindGradients(net, errorDiffs);
-				UpdateWeights(net, gradients);
-
 				if (epoch % Show == 0 || epoch == MaxEpochs - 1)
 				{
 					yield return errorObj;
+				}
+
+				if (epoch < MaxEpochs)
+				{
+					Core.Utils.Helpers.Shuffle(sInputs, sTargets);
+					var feedForwardResult = net.Run(sInputs, storeDerivatives: true);
+					var errorDiffs = this.PFunc.Differentiate(error, feedForwardResult, sTargets);
+					var gradients = FindGradients(net, errorDiffs);
+					UpdateWeights(net, gradients);
 				}
 			}
 		}
@@ -133,7 +139,8 @@ namespace Spark.Trainiers
 					var deltaH = LearnRate * gradients[cLayer.Id];
 					if (cLayer.Biased)
 					{
-						cLayer.Biases = (DenseVector)(DenseMatrix.OfColumnVectors(cLayer.Biases) + deltaH).Column(0);
+						cLayer.Biases = DenseVector.OfVector(deltaH.ColumnEnumerator().Select(tuple => tuple.Item2)
+							.Aggregate((x, a) => a + x)) + cLayer.Biases;
 					}
 					if (net.Edges.ContainsKey(cLayer.Id))
 					{
