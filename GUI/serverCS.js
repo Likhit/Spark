@@ -27,7 +27,7 @@ var evalDSL = edge.func({
 						var url = @"http://localhost:8085/output";
 						var response = wb.UploadValues(url, "POST", data);
 					}
-				});
+				}, true);
 			}
 
 			public async Task<object> Invoke(object input)

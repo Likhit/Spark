@@ -39,12 +39,15 @@ namespace DSL
 			}
 		}
 
-		public Interpretter(Action<object> printer)
+		public Interpretter(Action<object> printer, bool useNative = false)
 		{
 			parser = new Parser(new SparkGrammar());
 			state = new Dictionary<string, Tuple<Type, object>>();
 			this.printer = printer;
-			Helpers.InitializeNative();
+			if (useNative)
+			{
+				Helpers.InitializeNative();
+			}
 		}
 
 		public void Evaluate(string sourceCode)
