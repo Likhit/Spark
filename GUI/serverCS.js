@@ -39,8 +39,8 @@ var evalDSL = edge.func({
 		}
 	*/},
 	references: [
-		__dirname + "\\Spark DLLs\\DSL.dll",
-		__dirname + "\\Spark DLLs\\Newtonsoft.Json.dll"
+		__dirname + "\\spark_dlls\\DSL.dll",
+		__dirname + "\\spark_dlls\\Newtonsoft.Json.dll"
 	]
 });
 
