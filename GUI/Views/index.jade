@@ -1,0 +1,48 @@
+doctype html
+html(land="en")
+	head
+		meta(charset="utf-8")
+		meta(http-equiv="X-UA-Compatible", content="IE=edge")
+		meta(name="viewport", content="width=device-width, initial-scale=1")
+		link(rel="stylesheet", href="css/bootstrap.min.css")
+		link(rel="stylesheet", href="css/prism.css")
+		link(rel="stylesheet", href="css/index.css")
+		title Spark
+	body
+		header(class="navbar navbar-default navbar-static-top")
+			div(class="container-fluid")
+				div(class="navbar-header")
+					button(class="navbar-toggle", type="button", data-toggle="collapse", data-target=".bs-navbar-collapse")
+						span(class="sr-only").
+							Toggle navigation
+						span(class="icon-bar")
+						span(class="icon-bar")
+						span(class="icon-bar")
+					a(href="../", class="navbar-brand").
+							Spark
+
+				nav(class="collapse navbar-collapse bs-navbar-collapse", role="navigation")
+					ul(class="nav navbar-nav navbar-right")
+						li(class="active")
+							a(href="#").
+								Playground
+						li
+							a(href="#").
+								Getting started
+						li
+							a(href="#").
+								Documentation
+		div(class="container language-spark")
+			blockquote
+				pre
+					code.
+						Enter your code here...
+		script(src="js/jquery.js")
+		script(src="js/socket.io.min.js")
+		script(src="js/bootstrap.min.js")
+		script(src="js/prism.js")
+		script(src="js/d3.min.js")
+		script(src="js/tip.js")
+		script(src="js/globalize.min.js")
+		script(src="js/dx.chartjs.js")
+		script(src="js/index.js")
