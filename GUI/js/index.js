@@ -1,6 +1,12 @@
 $(function() {
 	var socket = io.connect("http://localhost:8085");
 
+	$("#docs").click(function (e) {
+		e.preventDefault();
+		console.log("clicked");
+		window.open("https://github.com/Likhit/Spark", "_blank");
+	});
+
 	var editMode = true;
 
 	var iShell = $(".language-spark");
