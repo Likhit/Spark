@@ -16,5 +16,4 @@ console.log("Press Ctrl+C to stop the server. You can access the shell on http:/
 process.on("exit", function (code) {
 	serverCS.kill(code);
 	serverJS.kill(code);
-	browser.kill(code);
 });

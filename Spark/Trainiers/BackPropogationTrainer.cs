@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Spark.Trainiers
 {
-	public class BackPropogationTrainer : Trainer
+	public class BackPropagationTrainer : Trainer
 	{
-		public BackPropogationTrainer(double learnRate = 0.05, double minError = 0.01,
+		public BackPropagationTrainer(double learnRate = 0.05, double minError = 0.01,
 			double momentum = 0.01, int maxEpochs = 100, int show = 10,
 			IPerformanceFunction pFunc = null, TrainingModes tMode = TrainingModes.OffLine)
 			: base(learnRate, minError, momentum, maxEpochs, show, pFunc, tMode)

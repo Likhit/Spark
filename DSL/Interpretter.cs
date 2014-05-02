@@ -458,8 +458,8 @@ namespace DSL
 			Trainer trainer = null;
 			switch (trainerClassName.Token.Text)
 			{
-				case "BackPropogationTrainer":
-					trainer = new BackPropogationTrainer(learnRate, minError, 0.01, maxEpochs, show, pFunc, tMode);
+				case "BackPropagationTrainer":
+					trainer = new BackPropagationTrainer(learnRate, minError, 0.01, maxEpochs, show, pFunc, tMode);
 					break;
 				case "PerceptronTrainer":
 					trainer = new PerceptronTrainer(learnRate, minError, 0.01, maxEpochs, show, pFunc, tMode);

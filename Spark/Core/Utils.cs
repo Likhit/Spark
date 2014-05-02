@@ -14,7 +14,15 @@ namespace Spark.Core.Utils
 	{
 		public static void InitializeNative()
 		{
-			MathNet.Numerics.Control.LinearAlgebraProvider = new MathNet.Numerics.Algorithms.LinearAlgebra.Mkl.MklLinearAlgebraProvider();
+			try
+			{
+				MathNet.Numerics.Control.LinearAlgebraProvider =
+					new MathNet.Numerics.Algorithms.LinearAlgebra.Mkl.MklLinearAlgebraProvider();
+			}
+			catch (Exception)
+			{
+				Console.WriteLine("Unable to load the native library. Using the normal dlls.");
+			}
 		}
 
 		public static List<T> Wrap<T>(T x)
