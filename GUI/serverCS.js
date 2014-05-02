@@ -39,8 +39,8 @@ var evalDSL = edge.func({
 		}
 	*/},
 	references: [
-		"D:\\Library Files\\My Documents\\Visual Studio 2012\\Projects\\Spark\\DSL\\bin\\Debug\\DSL.dll",
-		"D:\\Library Files\\My Documents\\Visual Studio 2012\\Projects\\Spark\\DSL\\bin\\Debug\\Newtonsoft.Json.dll"
+		__dirname + "\\Spark DLLs\\DSL.dll",
+		__dirname + "\\Spark DLLs\\Newtonsoft.Json.dll"
 	]
 });
 

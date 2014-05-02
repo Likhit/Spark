@@ -2,7 +2,7 @@
   "name": "Spark-Shell",
   "version": "0.1.0",
   "description": "An interactive shell to run Spark, a language for creating, running and training neural networks.",
-  "main": "serverJS.js",
+  "main": "main.js",
   "dependencies": {
     "express": "~3.5.1",
     "jade": "~1.3.1",
