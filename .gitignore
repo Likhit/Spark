@@ -1,0 +1,9 @@
+#Exclude folders ignored by master branch
+DSL/
+GUI/
+Spark/
+Runner/
+packages/
+
+#Exclude vs created files
+*.suo
