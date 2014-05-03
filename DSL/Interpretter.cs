@@ -362,7 +362,7 @@ namespace DSL
 			var matrixProps = EvaluateMatrixLoadType(node.ChildNodes[filePathIndex + 1]);
 			var filePath = (string)node.ChildNodes[filePathIndex].Token.Value;
 			var fileContents = Helpers.Load(filePath, delimiter, matrixProps.Item2);
-			var fileHeaders = GetFileHeaders(filePath, delimiter, matrixProps.Item2);
+			var fileHeaders = GetFileHeaders(filePath, delimiter, matrixProps.Item1, matrixProps.Item2);
 			SaveMatrixHeaders(identifier, fileHeaders);
 			return new Tuple<Type, object>(typeof(DenseMatrix), matrixProps.Item1 ? fileContents.Transpose() : fileContents);
 		}
@@ -385,16 +385,16 @@ namespace DSL
 			}
 		}
 
-		private string[] GetFileHeaders(string filePath, string delimiter, bool hasHeaders)
+		private string[] GetFileHeaders(string filePath, string delimiter, bool isRowMajor, bool hasHeaders)
 		{
 			using (var reader = new StreamReader(filePath))
 			{
 				var headerLine = reader.ReadLine();
 				var firstRow = headerLine.Split(delimiter.ToArray());
 				return hasHeaders ?
-					firstRow :
-					Enumerable.Range(0, firstRow.Count()).Select(i => string.Format("Column {0}", i)).ToArray();
-					
+					firstRow : isRowMajor ?
+					Enumerable.Range(0, firstRow.Count()).Select(i => string.Format("Column {0}", i)).ToArray():
+					new string[0];				
 			}
 		}
 
