@@ -21,4 +21,4 @@ Spark comes with an interactive shell similar to that of iPython that allows the
 
 ##Documentation
 
-The full documentation of the language can be found in the wiki page.
+The full documentation of the language can be found at the [documentation page](Documentation.pdf)
