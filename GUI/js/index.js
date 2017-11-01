@@ -77,6 +77,7 @@ $(function() {
 				codeTag[0].textContent = "";
 				codeTag.data("cleared", true);
 			}
+			codeTag.focus();
 		}
 	})
 	.on("blur", "code", function(e) {
